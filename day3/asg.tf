@@ -15,7 +15,7 @@ resource "aws_autoscaling_policy" "home_asg_policy" {
   policy_type = "TargetTrackingScaling"
   target_tracking_configuration {
     predefined_metric_specification {
-      predefined_metric_type = "ASGAverageCPUUtilizaton"
+      predefined_metric_type = "ASGAverageCPUUtilization"
    }
    target_value = 60
   }
@@ -38,7 +38,7 @@ resource "aws_autoscaling_policy" "mobile_asg_policy" {
   policy_type = "TargetTrackingScaling"
   target_tracking_configuration {
     predefined_metric_specification {
-      predefined_metric_type = "ASGAverageCPUUtilizaton"
+      predefined_metric_type = "ASGAverageCPUUtilization"
    }
    target_value = 60
   }
@@ -61,7 +61,7 @@ resource "aws_autoscaling_policy" "laptop_asg_policy" {
   policy_type = "TargetTrackingScaling"
   target_tracking_configuration {
     predefined_metric_specification {
-      predefined_metric_type = "ASGAverageCPUUtilizaton"
+      predefined_metric_type = "ASGAverageCPUUtilization"
    }
    target_value = 60
   }
