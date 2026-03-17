@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+    stages {
+        stage('PULL'){
+            steps{
+                git branch: 'cdec-b48', url: 'https://github.com/shubhamkalsait/EasyCRUD.git'
+            }
+        }
+        stage ('BUILD'){
+            steps{
+                sh '''
+                    cd backend
+                    mvn clean package -DskipTests
+                '''
+            }
+        }
+        stage ('TEST'){
+            steps{
+                withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar-cred') {
+                    sh '''cd backend
+                        mvn sonar:sonar -Dsonar.projectKey='easy-crud'
+                        '''
+                }
+            }
+        }
+        stage ('QUALITY-GATE'){
+            steps{
+                timeout(10) {
+                    waitForQualityGate abortPipeline: true, credentialsId: 'sonar-cred'
+                }                
+            }
+        }
+        stage ('DELIVER'){
+            steps{
+                sh '''cd backend/target
+                    aws s3 cp student-registration-backend-0.0.1-SNAPSHOT.jar s3://easy-crud-releases/easy-crud.jar
+                    '''
+            }
+        }
+    }
+}
